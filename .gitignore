@@ -1,0 +1,19 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+
+# Dependency directories
+venv/
+node_modules/
+
+# IDE settings
+.vscode/
+.id
+
+# Compiled Python files
+*.pyc
+
+# macOS files
+.DS_Store

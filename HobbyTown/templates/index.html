@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Игротека{% endblock %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/style.css'%}">
+{% endblock %}
+{% block content %}
+<div class="cards">
+    {% for event in events %}
+    <div class="card">
+        <div class="card-day">
+            <h2>{{ event.date_start|date:"l" }}</h2>
+            <span>{{ event.date_start|date:"d-m-Y" }}</span>
+        </div>
+        <div class="card-info">
+            <div class="cardtop">
+                <h3>{{ event.title }}</h3>
+                <span>{{ event.date_start|date:"H:i" }} - {{ event.date_end|date:"H:i" }}</span>
+                <p>{{ event.address }}</p>
+            </div>
+            <div class="card-body">
+                <div class="card-body-description">
+                    <img src="{{ event.image.url }}">
+                    <pre>{{ event.description }}</pre>
+                </div>
+                <div class="games">
+                    {% for game in event.eventgame_set.all %}
+                    <div class="game-info">
+                        <h3>{{ game.game.title }}</h3>
+                        <div class="game-info-description">
+                            <img src="{{ game.game.image.url }}">
+                            <p>{{ game.game.desc|truncatechars:400 }}</p>
+                        </div>
+                        <div class="seats">
+                            {% if game.players == 0 %}
+                            <p>Места закончились</p>
+                            {% else %}
+                            {% load custom_filters %}
+                            {% for sit in game.current|custom_range %}
+                            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;" title="Занято">chair_alt</span>
+                            {% endfor %}
+                            {% for sit in game.players|custom_range %}
+                            <span class="material-symbols-outlined">chair_alt</span>
+                            {% endfor %}
+                            {% endif %}
+                        </div>
+                        <button class="openModalBtn" data-modal-id="{{ event.id }}">Записаться</button>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+</main>
+{% endblock %}
